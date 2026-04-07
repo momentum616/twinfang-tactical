@@ -74,13 +74,29 @@ function currentMode() {
     return value === 'SGD' ? 'SGD' : 'USD';
   } catch { return 'USD'; }
 }
+function displayMoney(value, currency=currentMode()) {
+  const amount = Number(value || 0);
+  return `$${fmtNum.format(Math.round(amount))} ${currency}`;
+}
 function money(valueUsd) {
   const currency = currentMode();
   const val = currency === 'USD' ? valueUsd : valueUsd * SITE_SGD_RATE;
-  return `${new Intl.NumberFormat('en-US',{style:'currency',currency,maximumFractionDigits:0}).format(val)} ${currency}`;
+  return displayMoney(val, currency);
 }
-function usdDelta(value) { const sign = value > 0 ? '+' : ''; return `${sign}${moneyUsd(value)}`; }
-function moneyUsd(valueUsd) { return `${new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(valueUsd)} USD`; }
+function deltaMoney(valueUsd) {
+  const currency = currentMode();
+  const val = currency === 'USD' ? valueUsd : valueUsd * SITE_SGD_RATE;
+  const sign = val > 0 ? '+' : '';
+  return `${sign}${displayMoney(val, currency)}`;
+}
+function moneyUsd(valueUsd) { return displayMoney(valueUsd, 'USD'); }
+function localCurrencyCode(row) {
+  const map = { ID: 'IDR', MY: 'MYR', SG: 'SGD', TH: 'THB', VN: 'VND', PH: 'PHP' };
+  return map[row.countryCode] || row.countryCode || 'LOCAL';
+}
+function localRange(row) {
+  return `${localCurrencyCode(row)} ${fmtNum.format(row.suggestedLocalLow)}–${fmtNum.format(row.suggestedLocalHigh)}`;
+}
 function updateTableHeaders() {
   if (els.countrySnapshotHead) {
     els.countrySnapshotHead.children[3].textContent = currentMode() === 'USD' ? 'USD midpoint' : 'SGD midpoint';
@@ -89,8 +105,8 @@ function updateTableHeaders() {
   if (els.fallbackHead) {
     els.fallbackHead.children[1].textContent = currentMode() === 'USD' ? 'Raw USD midpoint' : 'Raw SGD midpoint';
     els.fallbackHead.children[2].textContent = currentMode() === 'USD' ? 'Effective midpoint (USD)' : 'Effective midpoint (SGD)';
-    els.fallbackHead.children[3].textContent = 'Δ vs base (USD)';
-    els.fallbackHead.children[4].textContent = 'Δ vs selected (USD)';
+    els.fallbackHead.children[3].textContent = `Δ vs base (${currentMode()})`;
+    els.fallbackHead.children[4].textContent = `Δ vs selected (${currentMode()})`;
   }
 }
 
@@ -158,10 +174,10 @@ function renderSummaryCards(selectedRow, baseRow) {
   const cards = [
     { label: 'Selected country', value: selectedRow.country, sub: `${selectedRow.track} track` },
     { label: 'Role / seniority', value: selectedRow.role, sub: `${selectedRow.seniorityBand} · ${selectedRow.experience}` },
-    { label: currentMode() === 'USD' ? 'USD midpoint' : 'SGD midpoint', value: money(selectedRow.usdMid), sub: currentMode() === 'USD' ? `Raw benchmark range ${moneyUsd(selectedRow.usdLow)}–${moneyUsd(selectedRow.usdHigh)}` : `Raw benchmark range ${money(selectedRow.usdLow)}–${money(selectedRow.usdHigh)}` },
-    { label: currentMode() === 'USD' ? 'Effective midpoint' : 'Effective midpoint (SGD)', value: money(selectedEffective), sub: 'Adjusted by scenario lens' },
-    { label: 'Hiring band', value: selectedRow.suggestedHiringBand, sub: `Suggested local ${fmtNum.format(selectedRow.suggestedLocalLow)}–${fmtNum.format(selectedRow.suggestedLocalHigh)} ${selectedRow.countryCode === 'SG' ? 'SGD' : ''}`.trim() },
-    { label: 'Δ vs base country (USD)', value: usdDelta(selectedEffective - baseEffective), sub: `${els.baseCountrySelect.value} comparison` },
+    { label: `${currentMode()} midpoint`, value: money(selectedRow.usdMid), sub: `Raw benchmark range ${money(currentMode() === 'USD' ? selectedRow.usdLow : selectedRow.usdLow)}–${money(currentMode() === 'USD' ? selectedRow.usdHigh : selectedRow.usdHigh)}` },
+    { label: `Effective midpoint (${currentMode()})`, value: money(selectedEffective), sub: 'Adjusted by scenario lens' },
+    { label: 'Hiring band', value: selectedRow.suggestedHiringBand, sub: `Suggested local ${localRange(selectedRow)}` },
+    { label: `Δ vs base country (${currentMode()})`, value: deltaMoney(selectedEffective - baseEffective), sub: `${els.baseCountrySelect.value} comparison` },
   ];
   els.summaryCards.innerHTML = cards.map(card => `
     <div class="metric-card">
@@ -180,7 +196,7 @@ function renderCountrySnapshot(rows) {
       <td>${r.experience}</td>
       <td>${money(r.usdMid)}</td>
       <td>${r.suggestedHiringBand}</td>
-      <td>${fmtNum.format(r.suggestedLocalLow)}–${fmtNum.format(r.suggestedLocalHigh)} ${r.countryCode === 'SG' ? 'SGD' : ''}</td>
+      <td>${localRange(r)}</td>
     </tr>
   `).join('');
 }
@@ -193,8 +209,8 @@ function renderFallbackTable(ranking, selectedCountry, baseCountry) {
         <td>${row.country}${row.country === selectedCountry ? ' <span class="tag warn">selected</span>' : ''}${row.country === baseCountry ? ' <span class="tag good">base</span>' : ''}</td>
         <td>${money(row.usdMid)}</td>
         <td>${money(row.effectiveMid)}</td>
-        <td class="${row.deltaVsBase >= 0 ? 'delta-pos':'delta-neg'}">${usdDelta(row.deltaVsBase)}</td>
-        <td class="${row.deltaVsSelected >= 0 ? 'delta-pos':'delta-neg'}">${usdDelta(row.deltaVsSelected)}</td>
+        <td class="${row.deltaVsBase >= 0 ? 'delta-pos':'delta-neg'}">${deltaMoney(row.deltaVsBase)}</td>
+        <td class="${row.deltaVsSelected >= 0 ? 'delta-pos':'delta-neg'}">${deltaMoney(row.deltaVsSelected)}</td>
         <td>${row.suggestedHiringBand}</td>
         <td><span class="tag ${tier.className}">${tier.label}</span></td>
       </tr>
@@ -213,10 +229,10 @@ function renderComparisonChart(ranking, selectedCountry) {
     data: { labels, datasets: [{ label: `Effective ${currentMode()} midpoint`, data: values, backgroundColor: colors, borderRadius: 8 }] },
     options: {
       maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${currentMode()==='USD' ? moneyUsd(ctx.raw) : money(ctx.raw / SITE_SGD_RATE)}` } } },
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${displayMoney(ctx.raw, currentMode())}` } } },
       scales: {
         x: { ticks: { color: '#cbd5e1' }, grid: { display: false } },
-        y: { ticks: { color: '#cbd5e1', callback: v => currentMode()==='USD' ? moneyUsd(v) : money(v / SITE_SGD_RATE) }, grid: { color: 'rgba(148,163,184,0.15)' } }
+        y: { ticks: { color: '#cbd5e1', callback: v => displayMoney(v, currentMode()) }, grid: { color: 'rgba(148,163,184,0.15)' } }
       }
     }
   });
