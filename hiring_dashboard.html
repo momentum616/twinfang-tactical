@@ -9,7 +9,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     .topbar {position:sticky; top:0; z-index:50; backdrop-filter: blur(10px); background: rgba(4,10,24,.82); border-bottom:1px solid rgba(255,255,255,.08);}
-    .topbar-inner {max-width: 1400px; margin:0 auto; padding: 14px 28px; display:flex; justify-content:space-between; align-items:center; gap:16px;}
+    .topbar-inner {width:min(1400px, calc(100% - 32px)); margin:0 auto; padding:14px 0; display:flex; justify-content:space-between; align-items:center; gap:16px;}
     .topnav {display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
     .topnav a {color:#cfd8ea; text-decoration:none; font-weight:700; padding:8px 10px; border-radius:10px;}
     .topnav a.active {color:#8dc8ff; background: rgba(124,199,255,.10);}
@@ -17,7 +17,7 @@
     .currency-label {color: var(--muted, #9fb0d0); font-size:12px;}
     .currency-btn {border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.03); color:#dce7ff; border-radius:999px; padding:8px 12px; cursor:pointer; font-weight:700;}
     .currency-btn.active {background: linear-gradient(180deg, rgba(124,199,255,.25), rgba(124,199,255,.12)); border-color: rgba(124,199,255,.35); color:#fff;}
-    @media (max-width: 760px) {.topbar-inner{padding:12px 16px; flex-direction:column; align-items:flex-start;}}
+    @media (max-width: 760px) {.topbar-inner{width:min(100% - 20px, 1400px); padding:12px 0; flex-direction:column; align-items:flex-start;}}
 
 .site-note{max-width:min(1400px, calc(100% - 32px)); margin: 10px auto 0; color:#94a3b8; font-size:12px;}
 </style>
@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  <div class="site-note">Site currency toggle is shared across the site. Recruitment benchmarks remain in USD plus local hiring bands.</div>
+  <div class="site-note">Site currency toggle is shared across the site. Recruitment values can be viewed in USD or SGD.</div>
   <header class="hero">
     <div>
       <p class="eyebrow">Twin Fang · Tactical Hiring Dashboard</p>
@@ -122,7 +122,7 @@
       <div>
         <div class="section-heading compact">
           <h2>Country snapshot</h2>
-          <p>All roles for the chosen country, ordered by track and role seniority.</p>
+          <p>All roles for the chosen country, ordered by track and role seniority. Values follow the site currency toggle.</p>
         </div>
         <div class="table-wrap">
           <table id="countrySnapshotTable">
@@ -131,7 +131,7 @@
                 <th>Track</th>
                 <th>Role</th>
                 <th>Experience</th>
-                <th>USD midpoint</th>
+                <th>Displayed midpoint</th>
                 <th>Hiring band</th>
                 <th>Suggested local range</th>
               </tr>
@@ -143,7 +143,7 @@
       <div>
         <div class="section-heading compact">
           <h2>Fallback comparison</h2>
-          <p>Nearby-country comparison for the selected role, adjusted by your scenario lens.</p>
+          <p>Nearby-country comparison for the selected role, adjusted by your scenario lens. Chart rerenders with the site currency toggle.</p>
         </div>
         <div class="chart-card card">
           <canvas id="comparisonChart"></canvas>
@@ -162,7 +162,7 @@
             <thead>
               <tr>
                 <th>Country</th>
-                <th>Raw USD midpoint</th>
+                <th>Raw midpoint</th>
                 <th>Effective midpoint</th>
                 <th>Δ vs base</th>
                 <th>Δ vs selected</th>
@@ -190,7 +190,7 @@
     <section class="panel">
       <div class="section-heading">
         <h2>Method</h2>
-        <p>This page uses the same salary reference logic as the spreadsheet: country-specific role bands, suggested hiring bands, and a scenario-based effective cost adjustment for fallback comparison.</p>
+        <p>This page uses the same salary reference logic as the spreadsheet: country-specific role bands, suggested hiring bands, and a scenario-based effective cost adjustment for fallback comparison. Displayed values follow the site-wide USD / SGD toggle.</p>
       </div>
       <ul class="method-list">
         <li><strong>Raw USD midpoint</strong> = midpoint of the reference salary band for that role and country.</li>
@@ -210,7 +210,8 @@
 <script>
 (function(){
   const KEY='tf_site_currency';
-  const current=localStorage.getItem(KEY)||'USD';
+  function normalizeCurrency(value){ return value==='SGD' ? 'SGD' : 'USD'; }
+  const current=normalizeCurrency(localStorage.getItem(KEY)||'USD');
   function applyButtons(){
     document.querySelectorAll('[data-site-currency-toggle]').forEach(wrap=>{
       wrap.querySelectorAll('[data-currency]').forEach(btn=>{
@@ -223,7 +224,7 @@
       });
     });
   }
-  window.tfGetCurrency = ()=> localStorage.getItem(KEY)||'USD';
+  window.tfGetCurrency = ()=> normalizeCurrency(localStorage.getItem(KEY)||'USD');
   applyButtons();
 })();
 </script>

@@ -156,7 +156,7 @@
 
   
     .topbar {position:sticky; top:0; z-index:50; backdrop-filter: blur(10px); background: rgba(4,10,24,.82); border-bottom:1px solid rgba(255,255,255,.08);}
-    .topbar-inner {max-width: 1400px; margin:0 auto; padding: 14px 28px; display:flex; justify-content:space-between; align-items:center; gap:16px;}
+    .topbar-inner {width:min(1400px, calc(100% - 32px)); margin:0 auto; padding:14px 0; display:flex; justify-content:space-between; align-items:center; gap:16px;}
     .topnav {display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
     .topnav a {color:#cfd8ea; text-decoration:none; font-weight:700; padding:8px 10px; border-radius:10px;}
     .topnav a.active {color:#8dc8ff; background: rgba(124,199,255,.10);}
@@ -164,7 +164,7 @@
     .currency-label {color: var(--muted, #9fb0d0); font-size:12px;}
     .currency-btn {border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.03); color:#dce7ff; border-radius:999px; padding:8px 12px; cursor:pointer; font-weight:700;}
     .currency-btn.active {background: linear-gradient(180deg, rgba(124,199,255,.25), rgba(124,199,255,.12)); border-color: rgba(124,199,255,.35); color:#fff;}
-    @media (max-width: 760px) {.topbar-inner{padding:12px 16px; flex-direction:column; align-items:flex-start;}}
+    @media (max-width: 760px) {.topbar-inner{width:min(100% - 20px, 1400px); padding:12px 0; flex-direction:column; align-items:flex-start;}}
 
     .money-main-inline{display:inline;}
     .currency-footnote{color: var(--muted); font-size:12px; margin-top:8px;}
@@ -195,7 +195,7 @@
         <div class="badge-row">
           <span class="badge">Projects tracked: <strong id="badgeProjects">-</strong></span>
           <span class="badge">Primary transacting currency: <strong>USD</strong></span>
-          <span class="badge">Display currency toggle available site-wide</span>
+          <span class="badge">Display currency toggle available site-wide (USD / Local) (USD / Local)</span>
           <span class="badge">Editable FX rate for SGD view</span>
         </div>
       </section>
@@ -234,7 +234,7 @@
             <input id="fxRate" type="number" step="0.0001" value="1.2850" />
           </div>
         </div>
-        <div class="section-note">USD is the primary transacting currency. Use the top-bar toggle to switch the displayed currency across the site.</div>
+        <div class="section-note">USD is the primary transacting currency. Use the top-bar toggle to switch the displayed currency across the site. SGD view uses SGD on this dashboard.</div>
       <div class="currency-footnote">Toggle applies site-wide and is remembered in your browser.</div>
       </aside>
     </div>
@@ -510,26 +510,20 @@
     }
 
     function currentCurrency() {
-      return (window.tfGetCurrency && window.tfGetCurrency()) || 'USD';
+      const mode = (window.tfGetCurrency && window.tfGetCurrency()) || 'USD';
+      return mode === 'SGD' ? 'SGD' : 'USD';
     }
 
     function fmtSingleMoney(n, currency) {
-      return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency,
-        maximumFractionDigits: 0
-      }).format(n);
+      const symbol = '$';
+      const formatted = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(n);
+      return `${symbol}${formatted} ${currency}`;
     }
 
-    function fmtPlainDollar(n) {
-      return `$${new Intl.NumberFormat('en-US', {
-        maximumFractionDigits: 0
-      }).format(n)}`;
-    }
     function fmtMoney(n) {
       const currency = currentCurrency();
       const value = currency === 'USD' ? n : n * currentFx();
-      return `<span class="money-main-inline">${fmtSingleMoney(value, currency)} ${currency}</span>`;
+      return `<span class="money-main-inline">${fmtSingleMoney(value, currency)}</span>`;
     }
 
     function fmtPct(n) {
@@ -936,8 +930,9 @@
 <script>
 (function(){
   const KEY='tf_site_currency';
+  function normalizeCurrency(value){ return value==='SGD' ? 'SGD' : 'USD'; }
   function getCurrency(){
-    return localStorage.getItem(KEY) || 'USD';
+    return normalizeCurrency(localStorage.getItem(KEY) || 'USD');
   }
   function paintButtons(){
     const current = getCurrency();
