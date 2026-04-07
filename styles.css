@@ -112,3 +112,41 @@ footer { padding: 8px 0 32px; }
   .cards-grid, .controls-grid { grid-template-columns: 1fr; }
   main, .hero, footer { width: min(100% - 20px, 1400px); }
 }
+
+
+.inline-snapshot {
+  margin-bottom: 18px;
+}
+.split-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+.toggle-btn {
+  border: 1px solid rgba(56,189,248,.35);
+  background: rgba(56,189,248,.12);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.toggle-btn:hover {
+  background: rgba(56,189,248,.18);
+}
+.scenario-section {
+  border-top: 1px solid rgba(148,163,184,.12);
+  padding-top: 18px;
+}
+.scenario-grid[hidden] { display: none; }
+@media (max-width: 900px) {
+  .split-heading {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .toggle-btn {
+    width: 100%;
+  }
+}

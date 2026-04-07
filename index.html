@@ -48,34 +48,43 @@
         </label>
       </div>
 
-      <div class="scenario-grid">
-        <div class="scenario-card">
-          <h3>Scenario lens</h3>
-          <p class="muted">These values affect fallback ranking only. They help approximate relocation friction, living-cost changes, and how much quality or fit justifies a higher salary.</p>
-          <div class="scenario-table-wrap">
-            <table id="scenarioTable">
-              <thead>
-                <tr>
-                  <th>Country</th>
-                  <th>Relocation %</th>
-                  <th>COL %</th>
-                  <th>Quality / fit</th>
-                  <th>Effective multiplier</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
+      <div class="inline-snapshot">
+        <div class="section-heading compact">
+          <h2>Selected role snapshot</h2>
+          <p>Core benchmark for the exact role you are evaluating.</p>
+        </div>
+        <div class="cards-grid" id="summaryCards"></div>
+      </div>
+
+      <div class="scenario-section">
+        <div class="section-heading split-heading compact">
+          <div>
+            <h2>Scenario lens</h2>
+            <p>Optional view. Turn this on when you want to pressure-test fallback markets with relocation, cost-of-living, and fit assumptions.</p>
+          </div>
+          <button id="scenarioToggle" class="toggle-btn" type="button" aria-expanded="false" aria-controls="scenarioPanel">Show scenario lens</button>
+        </div>
+
+        <div class="scenario-grid is-collapsed" id="scenarioPanel" hidden>
+          <div class="scenario-card">
+            <p class="muted">These values affect fallback ranking only. They help approximate relocation friction, living-cost changes, and how much quality or fit justifies a higher salary.</p>
+            <div class="scenario-table-wrap">
+              <table id="scenarioTable">
+                <thead>
+                  <tr>
+                    <th>Country</th>
+                    <th>Relocation %</th>
+                    <th>COL %</th>
+                    <th>Quality / fit</th>
+                    <th>Effective multiplier</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
-    </section>
-
-    <section class="panel">
-      <div class="section-heading">
-        <h2>Selected role snapshot</h2>
-        <p>Core benchmark for the exact role you are evaluating.</p>
-      </div>
-      <div class="cards-grid" id="summaryCards"></div>
     </section>
 
     <section class="panel two-col">

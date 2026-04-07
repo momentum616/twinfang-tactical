@@ -1,5 +1,6 @@
 let rawData;
 let comparisonChart;
+let scenarioVisible = false;
 
 const els = {
   countrySelect: document.getElementById('countrySelect'),
@@ -12,6 +13,8 @@ const els = {
   fallbackTable: document.querySelector('#fallbackTable tbody'),
   recommendationBuckets: document.getElementById('recommendationBuckets'),
   roleRationale: document.getElementById('roleRationale'),
+  scenarioToggle: document.getElementById('scenarioToggle'),
+  scenarioPanel: document.getElementById('scenarioPanel'),
 };
 
 const fmtUSD = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
