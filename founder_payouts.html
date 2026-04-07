@@ -152,9 +152,42 @@
       .kpi-grid { grid-template-columns: 1fr 1fr; }
       .stack-row { grid-template-columns: 1fr; }
     }
+  
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+      background: rgba(8, 12, 20, 0.78);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .topnav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+    .topnav a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 700;
+      opacity: 0.8;
+    }
+    .topnav a.active { opacity: 1; color: var(--accent, var(--text)); }
+    .topnav a:hover { opacity: 1; }
+
   </style>
 </head>
 <body>
+  <nav class="topnav">
+    <div class="topnav-inner">
+      <a href="index.html">Home</a>
+      <a href="founder_payouts.html" class="active">Fund Allocation</a>
+      <a href="hiring_dashboard.html">Recruitment</a>
+    </div>
+  </nav>
   <div class="wrap">
     <div class="header">
       <section class="hero">

@@ -109,16 +109,47 @@
       border-radius: 6px;
       color: var(--text);
     }
+  
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+      background: rgba(8, 12, 20, 0.78);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .topnav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+    .topnav a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 700;
+      opacity: 0.8;
+    }
+    .topnav a.active { opacity: 1; color: var(--accent, var(--text)); }
+    .topnav a:hover { opacity: 1; }
+
   </style>
 </head>
 <body>
+  <nav class="topnav">
+    <div class="topnav-inner">
+      <a href="index.html" class="active">Home</a>
+      <a href="founder_payouts.html">Fund Allocation</a>
+      <a href="hiring_dashboard.html">Recruitment</a>
+    </div>
+  </nav>
   <main class="wrap">
     <section class="hero">
       <div class="eyebrow">Twin Fang</div>
       <h1>Dashboard Main Menu</h1>
-      <p class="sub">
-        Use this page as the landing page for your GitHub Pages site. It links to the hiring dashboard and the revenue allocation dashboard.
-      </p>
+
     </section>
 
     <section class="grid">
