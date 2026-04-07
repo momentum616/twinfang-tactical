@@ -19,3 +19,7 @@
 
 ## Replacing the hiring page later
 When you have your real hiring dashboard, save it as `hiring_dashboard.html` and overwrite the placeholder file.
+
+
+## Important note
+The included `hiring_dashboard.html` was provided as an HTML file. If your original hiring dashboard also needs `styles.css`, `app.js`, or other assets, add those files to the same GitHub Pages folder.

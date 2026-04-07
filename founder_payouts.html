@@ -152,31 +152,44 @@
       .kpi-grid { grid-template-columns: 1fr 1fr; }
       .stack-row { grid-template-columns: 1fr; }
     }
+    .topnav a:hover { opacity: 1; }
+
   
     .topnav {
       position: sticky;
       top: 0;
-      z-index: 20;
-      backdrop-filter: blur(10px);
-      background: rgba(8, 12, 20, 0.78);
+      z-index: 100;
+      background: linear-gradient(180deg, rgba(2,8,20,0.96), rgba(4,12,28,0.96));
+      border-top: 1px solid rgba(255,255,255,0.08);
       border-bottom: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.28);
+    }
+    .topnav::after {
+      content: "";
+      display: block;
+      height: 26px;
+      background: linear-gradient(90deg, rgba(124,196,255,0.10), rgba(124,196,255,0.02) 35%, rgba(124,196,255,0.10));
+      border-top: 1px solid rgba(255,255,255,0.04);
     }
     .topnav-inner {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 14px 24px;
+      padding: 24px 28px 18px;
       display: flex;
-      gap: 18px;
+      gap: 34px;
       align-items: center;
     }
     .topnav a {
-      color: var(--text);
+      color: rgba(255,255,255,0.76);
       text-decoration: none;
-      font-weight: 700;
-      opacity: 0.8;
+      font-weight: 800;
+      font-size: 22px;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      transition: color 0.15s ease, opacity 0.15s ease;
     }
-    .topnav a.active { opacity: 1; color: var(--accent, var(--text)); }
-    .topnav a:hover { opacity: 1; }
+    .topnav a:hover { color: #ffffff; }
+    .topnav a.active { color: #7cc4ff; }
 
   </style>
 </head>
