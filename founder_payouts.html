@@ -155,43 +155,6 @@
     .topnav a:hover { opacity: 1; }
 
   
-    .topnav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: linear-gradient(180deg, rgba(2,8,20,0.96), rgba(4,12,28,0.96));
-      border-top: 1px solid rgba(255,255,255,0.08);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 10px 24px rgba(0,0,0,0.28);
-    }
-    .topnav::after {
-      content: "";
-      display: block;
-      height: 26px;
-      background: linear-gradient(90deg, rgba(124,196,255,0.10), rgba(124,196,255,0.02) 35%, rgba(124,196,255,0.10));
-      border-top: 1px solid rgba(255,255,255,0.04);
-    }
-    .topnav-inner {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 24px 28px 18px;
-      display: flex;
-      gap: 34px;
-      align-items: center;
-    }
-    .topnav a {
-      color: rgba(255,255,255,0.76);
-      text-decoration: none;
-      font-weight: 800;
-      font-size: 22px;
-      line-height: 1;
-      letter-spacing: -0.02em;
-      transition: color 0.15s ease, opacity 0.15s ease;
-    }
-    .topnav a:hover { color: #ffffff; }
-    .topnav a.active { color: #7cc4ff; }
-
-  
     .topbar {position:sticky; top:0; z-index:50; backdrop-filter: blur(10px); background: rgba(4,10,24,.82); border-bottom:1px solid rgba(255,255,255,.08);}
     .topbar-inner {max-width: 1400px; margin:0 auto; padding: 14px 28px; display:flex; justify-content:space-between; align-items:center; gap:16px;}
     .topnav {display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
@@ -224,13 +187,6 @@
     </div>
   </div>
 
-  <nav class="topnav">
-    <div class="topnav-inner">
-      <a href="index.html">Home</a>
-      <a href="founder_payouts.html" class="active">Fund Allocation</a>
-      <a href="hiring_dashboard.html">Recruitment</a>
-    </div>
-  </nav>
   <div class="wrap">
     <div class="header">
       <section class="hero">
@@ -238,10 +194,9 @@
         <p class="subtitle">Reporting dashboard built from <strong>Payout Builder - VCT.</strong> and <strong>Payout- Candy</strong> only. The first page gives an overall money view with project drill-down. The second page focuses on founder payouts and payout composition.</p>
         <div class="badge-row">
           <span class="badge">Projects tracked: <strong id="badgeProjects">-</strong></span>
-          <span class="badge">Reporting basis: <strong>project start date</strong></span>
-          <span class="badge">Primary currency: <strong>USD</strong></span>
-          <span class="badge">Also shown in: <strong>SGD</strong></span>
-          <span class="badge">Editable FX rate</span>
+          <span class="badge">Primary transacting currency: <strong>USD</strong></span>
+          <span class="badge">Display currency toggle available site-wide</span>
+          <span class="badge">Editable FX rate for SGD view</span>
         </div>
       </section>
 
@@ -272,14 +227,14 @@
           </div>
           <div class="field">
             <label>Currency display</label>
-            <input type="text" value="USD primary / SGD secondary" readonly />
+            <input type="text" value="Use the top-bar USD / SGD toggle" readonly />
           </div>
           <div class="field">
             <label for="fxRate">USD → SGD rate</label>
             <input id="fxRate" type="number" step="0.0001" value="1.2850" />
           </div>
         </div>
-        <div class="section-note">USD is the primary transacting currency. Use the top-bar toggle to view SGD equivalents.</div>
+        <div class="section-note">USD is the primary transacting currency. Use the top-bar toggle to switch the displayed currency across the site.</div>
       <div class="currency-footnote">Toggle applies site-wide and is remembered in your browser.</div>
       </aside>
     </div>
@@ -552,6 +507,10 @@
     function currentFx() {
       const v = parseFloat(els.fxRate.value);
       return Number.isFinite(v) && v > 0 ? v : 1.285;
+    }
+
+    function currentCurrency() {
+      return (window.tfGetCurrency && window.tfGetCurrency()) || 'USD';
     }
 
     function fmtSingleMoney(n, currency) {
@@ -970,27 +929,31 @@
     els.startDate.value = starts[0] || '';
     els.endDate.value = ends[ends.length - 1] || '';
     refreshPeriodOptions();
+    window.addEventListener('tf-currency-change', renderAll);
     renderAll();
   </script>
 
 <script>
 (function(){
   const KEY='tf_site_currency';
-  const current=localStorage.getItem(KEY)||'USD';
-  function applyButtons(){
-    document.querySelectorAll('[data-site-currency-toggle]').forEach(wrap=>{
-      wrap.querySelectorAll('[data-currency]').forEach(btn=>{
-        btn.classList.toggle('active', btn.dataset.currency===current);
-        btn.addEventListener('click', ()=>{
-          localStorage.setItem(KEY, btn.dataset.currency);
-          window.dispatchEvent(new CustomEvent('tf-currency-change', {detail: btn.dataset.currency}));
-          document.querySelectorAll('[data-site-currency-toggle] [data-currency]').forEach(b=>b.classList.toggle('active', b.dataset.currency===btn.dataset.currency));
-        });
-      });
+  function getCurrency(){
+    return localStorage.getItem(KEY) || 'USD';
+  }
+  function paintButtons(){
+    const current = getCurrency();
+    document.querySelectorAll('[data-site-currency-toggle] [data-currency]').forEach(btn=>{
+      btn.classList.toggle('active', btn.dataset.currency===current);
     });
   }
-  window.tfGetCurrency = ()=> localStorage.getItem(KEY)||'USD';
-  applyButtons();
+  document.querySelectorAll('[data-site-currency-toggle] [data-currency]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      localStorage.setItem(KEY, btn.dataset.currency);
+      paintButtons();
+      window.dispatchEvent(new CustomEvent('tf-currency-change', {detail: btn.dataset.currency}));
+    });
+  });
+  window.tfGetCurrency = getCurrency;
+  paintButtons();
 })();
 </script>
 
