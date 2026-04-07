@@ -25,7 +25,7 @@ const fmtNum = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
 
 const rolePriority = [
   'Junior Artist', 'Artist', 'Senior Artist', 'Art Director', 'Senior Art Director',
-  'Production Assistant', 'Production Coordinator (Account Manager)'
+  'Production Assistant', 'Production Coordinator (Account Manager)', 'Production Manager (Senior Account Manager)'
 ];
 
 fetch('data.json')
