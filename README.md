@@ -1,22 +1,21 @@
-# Tactical Hiring Dashboard
+# Twin Fang GitHub Pages Package
 
-Static webpage version of the SEA salary benchmark dashboard.
+## Files included
+- `index.html` — main menu
+- `founder_payouts.html` — Revenue Allocation dashboard
+- `hiring_dashboard.html` — placeholder page you can replace later
 
-## Deploy on GitHub Pages
-
-1. Create a new GitHub repository.
-2. Upload all files in this folder to the root of the repo.
-3. In GitHub, go to **Settings → Pages**.
-4. Under **Build and deployment**, choose **Deploy from a branch**.
-5. Select your main branch and the **/(root)** folder.
+## Upload to GitHub Pages
+1. Create or open your GitHub repository.
+2. Upload all files from this folder to the root of the repo.
+3. Commit the files.
+4. In GitHub, go to **Settings > Pages**.
+5. Under **Build and deployment**, set:
+   - **Source:** Deploy from a branch
+   - **Branch:** `main`
+   - **Folder:** `/ (root)`
 6. Save.
-7. GitHub will publish the site and give you a Pages URL.
+7. Wait for GitHub Pages to publish.
 
-## Files
-
-- `index.html` — main page
-- `styles.css` — styles
-- `app.js` — interactive logic
-- `data.json` — salary benchmark data extracted from the workbook
-
-No build step is required.
+## Replacing the hiring page later
+When you have your real hiring dashboard, save it as `hiring_dashboard.html` and overwrite the placeholder file.
