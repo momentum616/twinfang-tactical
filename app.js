@@ -1,6 +1,9 @@
 let rawData;
 let comparisonChart;
-let scenarioVisible = false;
+const STORAGE_KEYS = {
+  scenarioVisible: 'tf_hiring_dashboard_scenario_visible'
+};
+let scenarioVisible = loadScenarioVisibility();
 
 const els = {
   countrySelect: document.getElementById('countrySelect'),
@@ -32,6 +35,7 @@ fetch('data.json')
     setupControls();
     renderScenarioTable();
     bindEvents();
+    applyScenarioPanelState();
     renderAll();
   });
 
@@ -52,6 +56,37 @@ function bindEvents() {
       renderAll();
     });
   });
+
+  els.scenarioToggle.addEventListener('click', toggleScenarioPanel);
+}
+
+function toggleScenarioPanel() {
+  scenarioVisible = !scenarioVisible;
+  persistScenarioVisibility();
+  applyScenarioPanelState();
+}
+
+function applyScenarioPanelState() {
+  els.scenarioPanel.hidden = !scenarioVisible;
+  els.scenarioPanel.classList.toggle('is-collapsed', !scenarioVisible);
+  els.scenarioToggle.setAttribute('aria-expanded', String(scenarioVisible));
+  els.scenarioToggle.textContent = scenarioVisible ? 'Hide scenario lens' : 'Show scenario lens';
+}
+
+function loadScenarioVisibility() {
+  try {
+    return localStorage.getItem(STORAGE_KEYS.scenarioVisible) === 'true';
+  } catch (err) {
+    return false;
+  }
+}
+
+function persistScenarioVisibility() {
+  try {
+    localStorage.setItem(STORAGE_KEYS.scenarioVisible, String(scenarioVisible));
+  } catch (err) {
+    // Ignore storage failures so the dashboard still works.
+  }
 }
 
 function renderScenarioTable() {
