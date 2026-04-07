@@ -3,189 +3,92 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home</title>
+  <title>Twin Fang Dashboards</title>
   <style>
-    :root {
-      --bg: #0b0f14;
-      --panel: #121923;
-      --panel-2: #182231;
-      --text: #e8edf5;
-      --muted: #9fb0c7;
-      --accent: #7cc4ff;
-      --accent-2: #a78bfa;
-      --border: rgba(255,255,255,0.08);
-      --shadow: 0 16px 40px rgba(0,0,0,0.35);
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(124,196,255,0.12), transparent 28%),
-        radial-gradient(circle at top right, rgba(167,139,250,0.14), transparent 22%),
-        linear-gradient(180deg, #0b0f14 0%, #0d1218 100%);
-      color: var(--text);
-      min-height: 100vh;
-    }
-    .wrap {
-      max-width: 1040px;
-      margin: 0 auto;
-      padding: 56px 24px 64px;
-    }
-    .hero { margin-bottom: 28px; }
-    .eyebrow {
-      display: inline-block;
-      font-size: 12px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
-    h1 {
-      margin: 0 0 12px;
-      font-size: clamp(32px, 4vw, 52px);
-      line-height: 1.02;
-    }
-    .sub {
-      margin: 0;
-      color: var(--muted);
-      max-width: 760px;
-      font-size: 16px;
-      line-height: 1.6;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 18px;
-      margin-top: 30px;
-    }
-    .card {
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 22px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(6px);
-    }
-    .card h2 { margin: 0 0 10px; font-size: 22px; }
-    .card p {
-      margin: 0 0 18px;
-      color: var(--muted);
-      line-height: 1.6;
-      min-height: 76px;
-    }
-    .actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-    .btn {
-      appearance: none;
-      border: 0;
-      border-radius: 12px;
-      padding: 12px 16px;
-      font-size: 14px;
-      font-weight: 700;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      transition: transform 0.15s ease, opacity 0.15s ease, background 0.15s ease;
-    }
-    .btn:hover { transform: translateY(-1px); }
-    .btn-primary { background: linear-gradient(135deg, var(--accent), #5eead4); color: #07111a; }
-    .btn-secondary { background: var(--panel-2); color: var(--text); border: 1px solid var(--border); }
-    .note {
-      margin-top: 28px;
-      padding: 16px 18px;
-      border-radius: 16px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      line-height: 1.6;
-      font-size: 14px;
-    }
-    code {
-      background: rgba(255,255,255,0.06);
-      padding: 2px 6px;
-      border-radius: 6px;
-      color: var(--text);
-    }
+    :root { --bg:#0b0f14; --panel:#121923; --text:#e8edf5; --muted:#9fb0c7; --accent:#7cc4ff; --border:rgba(255,255,255,0.08); --shadow:0 16px 40px rgba(0,0,0,0.35); }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: radial-gradient(circle at top left, rgba(124,196,255,0.12), transparent 28%), radial-gradient(circle at top right, rgba(167,139,250,0.14), transparent 22%), linear-gradient(180deg, #0b0f14 0%, #0d1218 100%); color:var(--text); min-height:100vh; }
+    
+    .topbar {position:sticky; top:0; z-index:50; backdrop-filter: blur(10px); background: rgba(4,10,24,.82); border-bottom:1px solid rgba(255,255,255,.08);}
+    .topbar-inner {max-width: 1400px; margin:0 auto; padding: 14px 28px; display:flex; justify-content:space-between; align-items:center; gap:16px;}
+    .topnav {display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
+    .topnav a {color:#cfd8ea; text-decoration:none; font-weight:700; padding:8px 10px; border-radius:10px;}
+    .topnav a.active {color:#8dc8ff; background: rgba(124,199,255,.10);}
+    .currency-toggle {display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+    .currency-label {color: var(--muted, #9fb0d0); font-size:12px;}
+    .currency-btn {border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.03); color:#dce7ff; border-radius:999px; padding:8px 12px; cursor:pointer; font-weight:700;}
+    .currency-btn.active {background: linear-gradient(180deg, rgba(124,199,255,.25), rgba(124,199,255,.12)); border-color: rgba(124,199,255,.35); color:#fff;}
+    @media (max-width: 760px) {.topbar-inner{padding:12px 16px; flex-direction:column; align-items:flex-start;}}
 
-  
-    .topnav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: linear-gradient(180deg, rgba(2,8,20,0.96), rgba(4,12,28,0.96));
-      border-top: 1px solid rgba(255,255,255,0.08);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 10px 24px rgba(0,0,0,0.28);
-    }
-    .topnav::after {
-      content: "";
-      display: block;
-      height: 26px;
-      background: linear-gradient(90deg, rgba(124,196,255,0.10), rgba(124,196,255,0.02) 35%, rgba(124,196,255,0.10));
-      border-top: 1px solid rgba(255,255,255,0.04);
-    }
-    .topnav-inner {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 24px 28px 18px;
-      display: flex;
-      gap: 34px;
-      align-items: center;
-    }
-    .topnav a {
-      color: rgba(255,255,255,0.76);
-      text-decoration: none;
-      font-weight: 800;
-      font-size: 22px;
-      line-height: 1;
-      letter-spacing: -0.02em;
-      transition: color 0.15s ease, opacity 0.15s ease;
-    }
-    .topnav a:hover { color: #ffffff; }
-    .topnav a.active { color: #7cc4ff; }
-
+    .wrap { max-width:1040px; margin:0 auto; padding:40px 24px 64px; }
+    .hero { margin-bottom:28px; }
+    .eyebrow { display:inline-block; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:10px; font-weight:700; }
+    h1 { margin:0 0 12px; font-size:clamp(32px,4vw,52px); line-height:1.02; }
+    .sub { margin:0; color:var(--muted); max-width:760px; font-size:16px; line-height:1.6; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:18px; margin-top:30px; }
+    .card { background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); border:1px solid var(--border); border-radius:20px; padding:22px; box-shadow:var(--shadow); backdrop-filter:blur(6px); }
+    .card h2 { margin:0 0 10px; font-size:22px; }
+    .card p { margin:0 0 18px; color:var(--muted); line-height:1.6; min-height:76px; }
+    .btn { border:0; border-radius:12px; padding:12px 16px; font-size:14px; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; background:linear-gradient(135deg, var(--accent), #5eead4); color:#07111a; }
   </style>
 </head>
 <body>
-  <nav class="topnav">
-    <div class="topnav-inner">
-      <a href="index.html" class="active">Home</a>
-      <a href="founder_payouts.html">Fund Allocation</a>
-      <a href="hiring_dashboard.html">Recruitment</a>
+
+  <div class="topbar">
+    <div class="topbar-inner">
+      <nav class="topnav">
+        <a href="index.html" class="active">Home</a>
+        <a href="founder_payouts.html" class="">Fund Allocation</a>
+        <a href="hiring_dashboard.html" class="">Recruitment</a>
+      </nav>
+      <div class="currency-toggle" data-site-currency-toggle>
+        <span class="currency-label">Display currency</span>
+        <button class="currency-btn" data-currency="USD" type="button">USD</button>
+        <button class="currency-btn" data-currency="SGD" type="button">SGD</button>
+      </div>
     </div>
-  </nav>
+  </div>
+
   <main class="wrap">
     <section class="hero">
       <div class="eyebrow">Twin Fang</div>
       <h1>Dashboard Main Menu</h1>
-      <p class="sub">Choose a reporting view below.</p>
-
+      <p class="sub">Use this page as the landing page for your GitHub Pages site. It links to the hiring dashboard and the revenue allocation dashboard.</p>
     </section>
-
     <section class="grid">
       <article class="card">
-        <h2>Hiring Dashboard</h2>
-        <p>
-          Recruitment and talent market view for the roles and regions you mapped earlier.
-        </p>
-        <div class="actions">
-          <a class="btn btn-primary" href="hiring_dashboard.html">Open Hiring Dashboard</a>
-        </div>
+        <h2>Recruitment</h2>
+        <p>Recruitment and talent market view for the roles and regions you mapped earlier.</p>
+        <a class="btn" href="hiring_dashboard.html">Open Recruitment Dashboard</a>
       </article>
-
       <article class="card">
-        <h2>Revenue Allocation</h2>
-        <p>
-          Financial reporting dashboard showing project allocations, bucket splits, and founder payouts over time.
-        </p>
-        <div class="actions">
-          <a class="btn btn-primary" href="founder_payouts.html">Open Revenue Allocation</a>
-        </div>
+        <h2>Fund Allocation</h2>
+        <p>Financial reporting dashboard showing project allocations, bucket splits, and founder payouts over time.</p>
+        <a class="btn" href="founder_payouts.html">Open Fund Allocation</a>
       </article>
     </section>
   </main>
+
+<script>
+(function(){
+  const KEY='tf_site_currency';
+  const current=localStorage.getItem(KEY)||'USD';
+  function applyButtons(){
+    document.querySelectorAll('[data-site-currency-toggle]').forEach(wrap=>{
+      wrap.querySelectorAll('[data-currency]').forEach(btn=>{
+        btn.classList.toggle('active', btn.dataset.currency===current);
+        btn.addEventListener('click', ()=>{
+          localStorage.setItem(KEY, btn.dataset.currency);
+          window.dispatchEvent(new CustomEvent('tf-currency-change', {detail: btn.dataset.currency}));
+          document.querySelectorAll('[data-site-currency-toggle] [data-currency]').forEach(b=>b.classList.toggle('active', b.dataset.currency===btn.dataset.currency));
+        });
+      });
+    });
+  }
+  window.tfGetCurrency = ()=> localStorage.getItem(KEY)||'USD';
+  applyButtons();
+})();
+</script>
+
 </body>
 </html>
