@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Twinfang — Admin</title>
+    <meta name="description" content="Twinfang admin overview covering governance, operations, and future internal systems pages." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="./theme-init.js"></script>
+    <link rel="stylesheet" href="./design-tokens.css" />
+    <link rel="stylesheet" href="./layout.css" />
+    <link rel="stylesheet" href="./components.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a href="./index.html" class="brand-lockup" aria-label="Twinfang home">
+            <span class="nav-mark">TF</span>
+            <span class="brand-copy"><span class="brand-line">Twinfang Dashboard</span></span>
+          </a>
+
+                    <nav class="nav nav--sub" aria-label="Primary">
+            <div class="nav-links nav-links--primary">
+              <div class="nav-dropdown">
+                <a class="nav-link nav-link--dropdown" href="./index.html" aria-haspopup="true">Home</a>
+                <div class="nav-dropdown-menu" aria-label="Home submenu">
+                  <a class="nav-dropdown-link" href="./index.html">Overview</a>
+                </div>
+              </div>
+              <div class="nav-dropdown">
+                <a class="nav-link nav-link--dropdown" href="./art.html" aria-haspopup="true">Art</a>
+                <div class="nav-dropdown-menu" aria-label="Art submenu">
+                  <a class="nav-dropdown-link" href="./art.html">Overview</a>
+                  <a class="nav-dropdown-link" href="./recruitment.html">Hiring Dashboard</a>
+                </div>
+              </div>
+              <div class="nav-dropdown">
+                <a class="nav-link nav-link--dropdown" href="./production.html" aria-haspopup="true">Production</a>
+                <div class="nav-dropdown-menu" aria-label="Production submenu">
+                  <a class="nav-dropdown-link" href="./production.html">Overview</a>
+                  <a class="nav-dropdown-link" href="./production-active.html">Active Projects</a>
+                  <a class="nav-dropdown-link" href="./production-closed.html">Closed Projects</a>
+                </div>
+              </div>
+              <div class="nav-dropdown">
+                <a class="nav-link nav-link--dropdown" href="./sales.html" aria-haspopup="true">Sales</a>
+                <div class="nav-dropdown-menu" aria-label="Sales submenu">
+                  <a class="nav-dropdown-link" href="./sales.html">Overview</a>
+                  <a class="nav-dropdown-link" href="./commission.html">Commission</a>
+                </div>
+              </div>
+              <div class="nav-dropdown">
+                <a class="nav-link nav-link--dropdown" href="./finance.html" aria-haspopup="true">Finance</a>
+                <div class="nav-dropdown-menu" aria-label="Finance submenu">
+                  <a class="nav-dropdown-link" href="./finance.html">Overview</a>
+                  <a class="nav-dropdown-link" href="./founder-payouts.html">Founder Payouts</a>
+                  <a class="nav-dropdown-link" href="./payout-logic.html">Payout Logic</a>
+                </div>
+              </div>
+              <div class="nav-dropdown">
+                <a class="nav-link is-active nav-link--dropdown" href="./admin.html" aria-haspopup="true">Admin</a>
+                <div class="nav-dropdown-menu" aria-label="Admin submenu">
+                  <a class="nav-dropdown-link is-active" href="./admin.html">Overview</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="nav-utility">
+              <div class="theme-toggle" aria-label="Theme display preference">
+                <span class="theme-toggle-label">Theme</span>
+                <div class="segmented" role="tablist" aria-label="Theme selector">
+                  <button class="segmented-item" type="button" data-theme-option="light" aria-pressed="false">Light</button>
+                  <button class="segmented-item" type="button" data-theme-option="dark" aria-pressed="false">Dark</button>
+                </div>
+              </div>
+              <div class="currency-toggle" aria-label="Currency display preference">
+                <span class="currency-toggle-label">Currency</span>
+                <div class="segmented" role="tablist" aria-label="Currency selector">
+                  <button class="segmented-item is-active" type="button" data-currency-option="USD" aria-pressed="true">USD</button>
+                  <button class="segmented-item" type="button" data-currency-option="SGD" aria-pressed="false">SGD</button>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </header>
+
+      <main class="page-wrap page-stack">
+        <header class="page-header hero-card">
+          <span class="page-eyebrow">Admin</span>
+          <h1 class="page-title">Admin overview</h1>
+          <p class="page-subtitle">Use this section for governance, policy, internal operations, and future company systems that support the main operating branches.</p>
+          <div class="page-meta">
+            <span>Purpose: admin section overview</span>
+            <span>Audience: founders and operations leads</span>
+            <span>Default display currency: <strong data-currency-display>USD</strong></span>
+          </div>
+        </header>
+
+        <section class="grid grid-12">
+          <article class="card span-8">
+            <div class="card-header"><div><h2 class="card-title">What should live here later</h2><p class="card-subtitle">This page establishes the Admin bucket now so the structure can grow cleanly.</p></div></div>
+            <div class="card-body">
+              <ul class="menu-list">
+                <li>Governance and decision rights</li>
+                <li>Policies, SOPs, and operating manual references</li>
+                <li>Org structure, internal systems, and admin support pages</li>
+              </ul>
+            </div>
+          </article>
+          <article class="card span-4 card--callout">
+            <div class="card-header"><div><h2 class="card-title">Current build status</h2><p class="card-subtitle">Overview page created and wired into the shared nav.</p></div></div>
+            <div class="card-body stack-12">
+              <p class="m-0 soft">There are no child pages under Admin yet, but the section now exists as a proper top-level overview page.</p>
+              <div class="cluster"><span class="badge">Overview only</span><span class="badge">Ready for expansion</span></div>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+      <footer class="site-footer">
+        <div class="site-footer-inner">
+          <p class="site-footer-copy">Last updated: 9 Apr 2026 · © 2026 Twinfang Studio · Internal working build</p>
+        </div>
+      </footer>
+    <script src="./theme.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
