@@ -30,5 +30,10 @@
 
   window.tfGetTheme = getTheme;
   window.tfSetTheme = applyTheme;
+  window.addEventListener('storage', function (event) {
+    if (event.key === STORAGE_KEY) {
+      applyTheme(normalizeTheme(event.newValue || 'light'));
+    }
+  });
   applyTheme(getTheme());
 })();
